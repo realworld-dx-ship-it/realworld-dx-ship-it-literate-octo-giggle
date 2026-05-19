@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm:*)",
+      "Bash(node:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)"
+    ],
+    "deny": []
+  },
+  "env": {
+    "FREEE_COMPANY_ID": "",
+    "CLOUD_STORAGE_PATH": "./data/accounting",
+    "ACCOUNTING_OCR_PROVIDER": "claude-vision",
+    "ACCOUNTING_DEFAULT_CURRENCY": "JPY"
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const p=process.env.TOOL_OUTPUT||''; if(p.includes('accounting/receipts')) console.log('[Hook] 領収書ファイルを検出しました。/ryoshusho-shori を実行してOCR処理を行ってください。');\""
+          }
+        ]
+      }
+    ]
+  }
+}
